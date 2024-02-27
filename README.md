@@ -4,4 +4,4 @@ A new Flutter project.
 
 ##Digital clock
 
-<img src = "https://github.com/Zimil-Patel/digital_clock/blob/main/snaps/digital_clock.png" width = "250" height = "500"> &nbsp;&nbsp;&nbsp;&nbsp;
+<img src = "https://github.com/Zimil-Patel/digital_clock/blob/main/snaps/digital_clock.png"> &nbsp;&nbsp;&nbsp;&nbsp;
