@@ -16,24 +16,58 @@ class TimerApp extends StatefulWidget {
 
 late double height, width;
 DateTime dateTime = DateTime.now();
-int min = 0, sec = 0;
 
 var date = DateTime.now();
 
 class _TimerAppState extends State<TimerApp> {
+  int _seconds = 0;
+  Timer? _timer;
+  bool _isTimerRunning = true;
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    if (_isTimerRunning) return;
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _seconds++;
+      });
+    });
+
+    setState(() {
+      _isTimerRunning = true;
+    });
+  }
+
+  void stopTimer() {
+    if (!_isTimerRunning) return;
+
+    _timer?.cancel();
+    setState(() {
+      _seconds = 0;
+      _isTimerRunning = false;
+    });
+  }
+
+  late String formattedTime;
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
+    formattedTime = DateFormat('ss:mm:HH')
+        .format(DateTime(0).add(Duration(seconds: _seconds)));
+
     //print(DateFormat('EE').format(dateTime)); // prints Tuesday
 
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        dateTime = DateTime.now();
-        sec += 1;
-      });
-    });
+    // Timer.periodic(const Duration(seconds: 1), (Timer t) {
+    //   return checkState();
+    // });
 
     return SafeArea(
       child: Scaffold(
@@ -109,6 +143,7 @@ class _TimerAppState extends State<TimerApp> {
                 height: height / 1.1,
                 width: width / 2.4,
                 child: CircularProgressIndicator(
+                  value: 1,
                   color: timeColor,
                   strokeWidth: 10,
                 ),
@@ -130,10 +165,7 @@ class _TimerAppState extends State<TimerApp> {
           //timer counter
           RichText(
               text: TextSpan(children: [
-            showDayDate(
-                color: timeColor,
-                day:
-                    '${min < 10 ? '0$min' : min} : ${sec < 10 ? '0$sec' : sec}'),
+            showDayDate(color: timeColor, day: formattedTime),
           ])),
 
           //top stuff
@@ -184,4 +216,11 @@ class _TimerAppState extends State<TimerApp> {
       style: TextStyle(color: timeColor, fontSize: height / 20),
     );
   }
+
+  // void checkState() {
+  //   setState(() {
+  //     sec++;
+  //     dateTime = DateTime.now();
+  //   });
+  // }
 }
