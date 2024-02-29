@@ -97,7 +97,7 @@ class _AnalogState extends State<Analog> {
             // //minutes
             Center(
               child: Transform.rotate(
-                angle: dateTime.minute * 6 * pi / 180,
+                angle: (dateTime.minute * 6 * pi / 180),
                 child: VerticalDivider(
                   color: Colors.white.withOpacity(0.4),
                   thickness: 6,
@@ -110,7 +110,8 @@ class _AnalogState extends State<Analog> {
             // //hours
             Center(
               child: Transform.rotate(
-                angle: dateTime.hour * 30 * pi / 180,
+                angle: (dateTime.hour * 30 * pi / 180) +
+                    (dateTime.minute * 0.5 * pi / 180),
                 child: VerticalDivider(
                   color: Colors.white.withOpacity(0.6),
                   thickness: 6,
