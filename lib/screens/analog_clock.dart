@@ -61,10 +61,12 @@ class _AnalogState extends State<Analog> {
         child: Stack(
           children: [
             AnalogClock(
-              tickColor: Colors.black,
+              tickColor: Colors.transparent,
               numberColor: timeColor,
               showAllNumbers: true,
               showSecondHand: false,
+              showDigitalClock: false,
+              showTicks: true,
             ),
 
             ...List.generate(
@@ -172,10 +174,20 @@ class _AnalogState extends State<Analog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //alaram icon
-                Icon(
-                  Icons.alarm_on_rounded,
-                  size: 40,
-                  color: timeColor,
+                SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(100),
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/timer');
+                    },
+                    child: Icon(
+                      Icons.alarm_on_rounded,
+                      size: 40,
+                      color: timeColor,
+                    ),
+                  ),
                 ),
 
                 const SizedBox(
