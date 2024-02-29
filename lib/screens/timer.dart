@@ -22,7 +22,7 @@ var date = DateTime.now();
 class _TimerAppState extends State<TimerApp> {
   int _seconds = 0;
   Timer? _timer;
-  bool _isTimerRunning = true;
+  bool _isTimerRunning = false;
 
   @override
   void dispose() {
@@ -35,7 +35,8 @@ class _TimerAppState extends State<TimerApp> {
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        _seconds++;
+        if (_seconds <= 900 - 1) _seconds++;
+        dateTime = DateTime.now();
       });
     });
 
@@ -60,7 +61,7 @@ class _TimerAppState extends State<TimerApp> {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
-    formattedTime = DateFormat('ss:mm:HH')
+    formattedTime = DateFormat('mm:ss')
         .format(DateTime(0).add(Duration(seconds: _seconds)));
 
     //print(DateFormat('EE').format(dateTime)); // prints Tuesday
@@ -143,7 +144,7 @@ class _TimerAppState extends State<TimerApp> {
                 height: height / 1.1,
                 width: width / 2.4,
                 child: CircularProgressIndicator(
-                  value: 1,
+                  value: (_seconds / 1800) * 1.997,
                   color: timeColor,
                   strokeWidth: 10,
                 ),
@@ -168,7 +169,34 @@ class _TimerAppState extends State<TimerApp> {
             showDayDate(color: timeColor, day: formattedTime),
           ])),
 
-          //top stuff
+          //start button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(timeColor),
+                ),
+                onPressed: startTimer,
+                child: const Text(
+                  'Start',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Text('15 min Timer',
+                  style: TextStyle(
+                    color: Colors.red.shade100,
+                    fontSize: 20,
+                  ))
+            ],
+          ),
+
+          //bottom stuff
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -12,7 +12,7 @@ void main() {
   runApp(MaterialApp(
       //routes
       debugShowCheckedModeBanner: false,
-      initialRoute: '/analog',
+      initialRoute: '/timer',
       routes: {
         '/clock': (context) => const DigitalClock(),
         '/analog': (context) => const Analog(),
