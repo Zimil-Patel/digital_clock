@@ -5,7 +5,6 @@ import 'package:analog_clock/analog_clock.dart';
 import 'package:digital_clock/colors/digital_clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 

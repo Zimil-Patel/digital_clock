@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:digital_clock/colors/digital_clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StopWatch extends StatefulWidget {
@@ -12,6 +11,8 @@ class StopWatch extends StatefulWidget {
   @override
   State<StopWatch> createState() => _StopWatchState();
 }
+
+late double height, width;
 
 class _StopWatchState extends State<StopWatch> {
   late Stopwatch stopWatch;
@@ -49,6 +50,9 @@ class _StopWatchState extends State<StopWatch> {
 
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
@@ -56,7 +60,7 @@ class _StopWatchState extends State<StopWatch> {
         //appbar of the screen
         appBar: AppBar(
           iconTheme: IconThemeData(color: timeColor),
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.transparent,
           title: Text(
             'Stop Watch',
             style: TextStyle(
@@ -79,8 +83,8 @@ class _StopWatchState extends State<StopWatch> {
                 },
                 padding: const EdgeInsets.all(0),
                 child: Container(
-                  height: 240,
-                  width: 240,
+                  height: height / 1.3,
+                  width: height / 1.3,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.black,

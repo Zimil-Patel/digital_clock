@@ -176,6 +176,7 @@ class _AnalogState extends State<Analog> {
                 //alaram icon
                 SizedBox(
                   height: 50,
+                  width: 100,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(100),
                     onTap: () {
@@ -203,6 +204,7 @@ class _AnalogState extends State<Analog> {
                 //stopwatch icon
                 SizedBox(
                   height: 50,
+                  width: 150,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(100),
                     onTap: () {
