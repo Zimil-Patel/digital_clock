@@ -256,7 +256,7 @@ class _AnalogState extends State<Analog> {
         text: day,
         style: GoogleFonts.varelaRound(
             textStyle: TextStyle(
-                fontSize: size ?? 40,
+                fontSize: size ?? 30,
                 color: color ?? Colors.white,
                 fontWeight: FontWeight.w600)));
   }

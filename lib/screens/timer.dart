@@ -23,19 +23,23 @@ class _TimerAppState extends State<TimerApp> {
   bool isRunning = false;
 
   void startStop() async {
+    setState(() {});
+
     await Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         second--;
       });
     });
 
-    if (second > 0 && isRunning) {
-      startStop();
-    } else {
-      isRunning = false;
-      setState(() {
-
-      });
+    if (isRunning) {
+      if (second > 0) {
+        startStop();
+      } else {
+        isRunning = false;
+        setState(() {
+          second = minutes * 60;
+        });
+      }
     }
   }
 
@@ -139,9 +143,7 @@ class _TimerAppState extends State<TimerApp> {
                 CupertinoButton(
                   onPressed: () {
                     if (isRunning) {
-                        isRunning = false;
-                        minutes = 1;
-                        second = minutes * 60;
+                      isRunning = false;
                     } else {
                       isRunning = true;
                       startStop();
@@ -155,7 +157,7 @@ class _TimerAppState extends State<TimerApp> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
-                      isRunning ? 'Reset' : 'Start',
+                      isRunning ? 'Stop' : 'Start',
                       style: GoogleFonts.varelaRound(
                         textStyle: const TextStyle(
                             color: Colors.black,
