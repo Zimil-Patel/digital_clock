@@ -16,227 +16,175 @@ class TimerApp extends StatefulWidget {
 }
 
 late double height, width;
-DateTime dateTime = DateTime.now();
-
-var date = DateTime.now();
 
 class _TimerAppState extends State<TimerApp> {
-  int _seconds = 0;
-  Timer? _timer;
-  bool _isTimerRunning = false;
+  int minutes = 1;
+  late int second = (minutes * 60);
+  bool isRunning = false;
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  void startTimer() {
-    if (_isTimerRunning) return;
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  void startStop() async {
+    await Future.delayed(const Duration(seconds: 1), () {
       setState(() {
-        if (_seconds <= 900 - 1) _seconds++;
-        dateTime = DateTime.now();
+        second--;
       });
     });
 
-    setState(() {
-      _isTimerRunning = true;
-    });
+    if (second > 0 && isRunning) {
+      startStop();
+    } else {
+      isRunning = false;
+      setState(() {
+
+      });
+    }
   }
 
-  void stopTimer() {
-    if (!_isTimerRunning) return;
-
-    _timer?.cancel();
-    setState(() {
-      _seconds = 0;
-      _isTimerRunning = false;
-    });
-  }
-
-  late String formattedTime;
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
-    formattedTime = DateFormat('mm:ss')
-        .format(DateTime(0).add(Duration(seconds: _seconds)));
-
-    //print(DateFormat('EE').format(dateTime)); // prints Tuesday
-
-    // Timer.periodic(const Duration(seconds: 1), (Timer t) {
-    //   return checkState();
-    // });
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
+        appBar: AppBar(
+          centerTitle: true,
+          iconTheme: IconThemeData(color: timeColor),
+          backgroundColor: Colors.transparent,
+          title: Text(
+            'Timer',
+            style: TextStyle(
+              color: timeColor,
+              fontSize: 26,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
         body: Center(
-            child: Row(children: [
-          // hours and minutes
-          analog(),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+              // hours and minutes
+              analog(),
 
-          const Spacer(),
-
-          //other stuffs
-          rightStuffs(),
-        ])),
+              //other stuffs
+              rightStuffs(),
+            ])),
       ),
     );
   }
 
   analog() {
-    return Expanded(
-      flex: 4,
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: timeColor, width: 5),
-        ),
-        child: Stack(
-          children: [
-            //analog clock text/ numbers
-            AnalogClock(
-              tickColor: Colors.transparent,
-              numberColor: timeColor,
-              showAllNumbers: true,
-              showSecondHand: false,
-              showDigitalClock: false,
-              showTicks: true,
-              hourHandColor: Colors.transparent,
-              minuteHandColor: Colors.transparent,
-            ),
-            ...List.generate(
-              60,
-              (index) => Center(
-                child: Transform.rotate(
-                  angle: index * 6 * pi / 180,
-                  child: VerticalDivider(
-                    color: (index % 5 == 0) ? timeColor : Colors.white,
-                    thickness: (index % 5 == 0) ? 4 : 1,
-                    indent: (index % 5 == 0) ? height / 1.11 : height / 1.11,
-                  ),
+    return Container(
+      height: 300,
+      width: 300,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: timeColor, width: 5),
+      ),
+      child: Stack(
+        children: [
+          //analog clock text/ numbers
+          AnalogClock(
+            tickColor: Colors.transparent,
+            numberColor: timeColor,
+            showAllNumbers: true,
+            showSecondHand: false,
+            showDigitalClock: false,
+            showTicks: true,
+            hourHandColor: Colors.transparent,
+            minuteHandColor: Colors.transparent,
+          ),
+          ...List.generate(
+            60,
+            (index) => Center(
+              child: Transform.rotate(
+                angle: index * 6 * pi / 180,
+                child: VerticalDivider(
+                  color: (index % 5 == 0) ? timeColor : Colors.white,
+                  thickness: (index % 5 == 0) ? 4 : 1,
+                  indent: (index % 5 == 0) ? height / 1.11 : height / 1.11,
                 ),
               ),
             ),
+          ),
 
-            //arrow back button
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  color: timeColor,
-                  size: 30,
-                ),
+          //circular progress bar
+          Center(
+            child: SizedBox(
+              height: 300,
+              width: 300,
+              child: CircularProgressIndicator(
+                value: second / (60 * minutes),
+                color: timeColor,
+                strokeWidth: 10,
               ),
             ),
+          ),
 
-            //circular progress bar
-            Center(
-              child: SizedBox(
-                height: height / 1.1,
-                width: width / 2.4,
-                child: CircularProgressIndicator(
-                  value: (_seconds / 1800) * 1.997,
-                  color: timeColor,
-                  strokeWidth: 10,
-                ),
-              ),
-            ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('$minutes min Timer',
+                    style: GoogleFonts.varelaRound(
+                      textStyle: TextStyle(
+                          color: Colors.red.shade100,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    )),
 
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('15 min Timer',
+                //start button
+                CupertinoButton(
+                  onPressed: () {
+                    if (isRunning) {
+                        isRunning = false;
+                        minutes = 1;
+                        second = minutes * 60;
+                    } else {
+                      isRunning = true;
+                      startStop();
+                    }
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: timeColor,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      isRunning ? 'Reset' : 'Start',
                       style: GoogleFonts.varelaRound(
-                        textStyle: TextStyle(
-                            color: Colors.red.shade100,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold),
-                      )),
-
-                  //start button
-                  CupertinoButton(
-                    onPressed: _isTimerRunning ? stopTimer : startTimer,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: timeColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        _isTimerRunning ? 'Reset' : 'Start',
-                        style: GoogleFonts.varelaRound(
-                          textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 2),
-                        ),
+                        textStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 2),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   rightStuffs() {
-    return Expanded(
-      flex: 2,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //timer counter
-          RichText(
-              text: TextSpan(children: [
-            showDayDate(color: timeColor, day: formattedTime),
-          ])),
-
-          //bottom stuff
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                  text: TextSpan(children: [
-                showDayDate(
-                    day: DateFormat('EE').format(dateTime), color: timeColor),
-                showDayDate(day: ' ${dateTime.day}'),
-              ])),
-
-              const SizedBox(
-                height: 20,
-              ),
-
-              //second and AM/PM
-              RichText(
-                  text: TextSpan(children: [
-                showDayDate(
-                    color: timeColor,
-                    day:
-                        '${dateTime.hour % 12 < 10 ? '0${dateTime.hour % 12}' : dateTime.hour % 12} : ${dateTime.minute < 10 ? '0${dateTime.minute}' : dateTime.minute} : ${dateTime.second < 10 ? '0${dateTime.second}' : dateTime.second}'),
-                showDayDate(
-                    day: dateTime.hour < 12 ? '  AM' : '  PM', size: 16),
-              ])),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        addBtn(1),
+        addBtn(5),
+        addBtn(10),
+        addBtn(20),
+        addBtn(30),
+      ],
     );
   }
 
@@ -257,10 +205,36 @@ class _TimerAppState extends State<TimerApp> {
     );
   }
 
-  // void checkState() {
-  //   setState(() {
-  //     sec++;
-  //     dateTime = DateTime.now();
-  //   });
-  // }
+  addBtn(int min) {
+    return CupertinoButton(
+        child: Container(
+          width: 100,
+          height: 24,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: timeColor,
+            borderRadius: BorderRadiusDirectional.circular(5),
+          ),
+          child: Text('$min minutes',
+              style: GoogleFonts.varelaRound(
+                textStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold),
+              )),
+        ),
+        onPressed: () {
+          setState(() {
+            minutes = min;
+            second = minutes * 60;
+          });
+        });
+  }
+
+// void checkState() {
+//   setState(() {
+//     sec++;
+//     dateTime = DateTime.now();
+//   });
+// }
 }

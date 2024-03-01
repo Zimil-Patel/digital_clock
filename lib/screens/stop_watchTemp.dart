@@ -15,37 +15,29 @@ class StopWatch extends StatefulWidget {
 late double height, width;
 
 class _StopWatchState extends State<StopWatch> {
-  late Stopwatch stopWatch;
-  late Timer t;
+  bool isRunning = false;
+  int sec = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    stopWatch = Stopwatch();
+  String formattedTime() {
+    String s = (sec % 60).toString().padLeft(2, '0');
+    String m = ((sec ~/ 60) % 60).toString().padLeft(2, '0');
+    String h = (((sec ~/ 60) ~/ 60)).toString().padLeft(2, '0');
 
-    t = Timer.periodic(const Duration(milliseconds: 30), (timer) {
+    return '$h : $m : $s';
+  }
+
+  void startStop() async {
+    await Future.delayed(const Duration(milliseconds: 1000), () {
+      if (isRunning) {
+        sec++;
+      }
+
       setState(() {});
     });
-  }
 
-  //start and stop handler
-  startStop() {
-    if (stopWatch.isRunning) {
-      stopWatch.stop();
-    } else {
-      stopWatch.start();
+    if (isRunning) {
+      startStop();
     }
-  }
-
-  //formattig time in string
-  String getFormattedTime() {
-    var mili = stopWatch.elapsed.inMilliseconds;
-
-    String miliSec = (mili % 1000).toString().padLeft(3, '0');
-    String sec = (mili ~/ 1000).toString().padLeft(2, '0');
-    String min = ((mili ~/ 1000) ~/ 60).toString().padLeft(2, '0');
-
-    return "$min:$sec:$miliSec";
   }
 
   @override
@@ -81,7 +73,12 @@ class _StopWatchState extends State<StopWatch> {
               //stopwatch design
               CupertinoButton(
                 onPressed: () {
-                  startStop();
+                  if (isRunning) {
+                    isRunning = false;
+                  } else {
+                    isRunning = true;
+                    startStop();
+                  }
                 },
                 padding: const EdgeInsets.all(0),
                 child: Container(
@@ -104,7 +101,7 @@ class _StopWatchState extends State<StopWatch> {
                     children: [
                       //stopwatch time
                       Text(
-                        getFormattedTime(),
+                        formattedTime(),
                         style: TextStyle(
                           color: timeColor,
                           fontSize: 30,
@@ -117,7 +114,7 @@ class _StopWatchState extends State<StopWatch> {
                       ),
 
                       //start stop text
-                      Text(stopWatch.isRunning ? 'Stop' : 'Start',
+                      Text(false ? 'Stop' : 'Start',
                           style: GoogleFonts.varelaRound(
                             textStyle: TextStyle(
                               color: Colors.red.shade100,
@@ -131,7 +128,8 @@ class _StopWatchState extends State<StopWatch> {
 
               CupertinoButton(
                 onPressed: () {
-                  stopWatch.reset();
+                  sec = 0;
+                  setState(() {});
                 },
                 child: Text('Reset',
                     style: GoogleFonts.varelaRound(
