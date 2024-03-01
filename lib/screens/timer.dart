@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:analog_clock/analog_clock.dart';
 import 'package:digital_clock/colors/digital_clock.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -150,6 +152,44 @@ class _TimerAppState extends State<TimerApp> {
                 ),
               ),
             ),
+
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('15 min Timer',
+                      style: GoogleFonts.varelaRound(
+                        textStyle: TextStyle(
+                            color: Colors.red.shade100,
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold),
+                      )),
+
+                  //start button
+                  CupertinoButton(
+                    onPressed: _isTimerRunning ? stopTimer : startTimer,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: timeColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        _isTimerRunning ? 'Reset' : 'Start',
+                        style: GoogleFonts.varelaRound(
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 2),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -168,33 +208,6 @@ class _TimerAppState extends State<TimerApp> {
               text: TextSpan(children: [
             showDayDate(color: timeColor, day: formattedTime),
           ])),
-
-          //start button
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(timeColor),
-                ),
-                onPressed: startTimer,
-                child: const Text(
-                  'Start',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Text('15 min Timer',
-                  style: TextStyle(
-                    color: Colors.red.shade100,
-                    fontSize: 20,
-                  ))
-            ],
-          ),
 
           //bottom stuff
           Column(

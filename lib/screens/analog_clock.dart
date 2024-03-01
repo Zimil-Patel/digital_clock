@@ -176,16 +176,53 @@ class _AnalogState extends State<Analog> {
                 //alaram icon
                 SizedBox(
                   height: 50,
-                  width: 50,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(100),
                     onTap: () {
                       Navigator.of(context).pushNamed('/timer');
                     },
-                    child: Icon(
-                      Icons.alarm_on_rounded,
-                      size: 40,
-                      color: timeColor,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.alarm_on_rounded,
+                          size: 40,
+                          color: timeColor,
+                        ),
+                        Text(' Timer',
+                            style: GoogleFonts.varelaRound(
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                ),
+
+                //stopwatch icon
+                SizedBox(
+                  height: 50,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(100),
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/stop');
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.watch_later_sharp,
+                          size: 40,
+                          color: timeColor,
+                        ),
+                        Text(' StopWatch',
+                            style: GoogleFonts.varelaRound(
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            )),
+                      ],
                     ),
                   ),
                 ),
