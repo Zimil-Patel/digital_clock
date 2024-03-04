@@ -42,7 +42,7 @@ class _StopWatchState extends State<StopWatch> {
     var mili = stopWatch.elapsed.inMilliseconds;
 
     String miliSec = (mili % 1000).toString().padLeft(3, '0');
-    String sec = (mili ~/ 1000).toString().padLeft(2, '0');
+    String sec = ((mili ~/ 1000) % 60).toString().padLeft(2, '0');
     String min = ((mili ~/ 1000) ~/ 60).toString().padLeft(2, '0');
 
     return "$min:$sec:$miliSec";
@@ -60,7 +60,6 @@ class _StopWatchState extends State<StopWatch> {
         //appbar of the screen
         appBar: AppBar(
           centerTitle: true,
-
           iconTheme: IconThemeData(color: timeColor),
           backgroundColor: Colors.transparent,
           title: Text(
