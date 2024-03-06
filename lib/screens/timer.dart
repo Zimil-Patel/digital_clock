@@ -23,24 +23,26 @@ class _TimerAppState extends State<TimerApp> {
   bool isRunning = false;
 
   void startStop() async {
-    setState(() {});
-
-    await Future.delayed(const Duration(seconds: 1), () {
-      setState(() {
-        second--;
-      });
-    });
-
     if (isRunning) {
-      if (second > 0) {
-        startStop();
-      } else {
-        isRunning = false;
+      await Future.delayed(const Duration(seconds: 1), () {
         setState(() {
-          second = minutes * 60;
+          second--;
         });
+      });
+
+      if (isRunning) {
+        if (second > 0) {
+          startStop();
+        } else {
+          isRunning = false;
+          setState(() {
+            second = minutes * 60;
+          });
+        }
       }
     }
+
+    setState(() {});
   }
 
   @override
@@ -57,10 +59,12 @@ class _TimerAppState extends State<TimerApp> {
           backgroundColor: Colors.transparent,
           title: Text(
             'Timer',
-            style: TextStyle(
-              color: timeColor,
-              fontSize: 26,
-              fontWeight: FontWeight.w600,
+            style: GoogleFonts.varelaRound(
+              textStyle: TextStyle(
+                color: timeColor,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),
@@ -84,8 +88,14 @@ class _TimerAppState extends State<TimerApp> {
       width: 300,
       alignment: Alignment.center,
       decoration: BoxDecoration(
+        color: Colors.black,
+        border: Border.all(
+          width: 0,
+        ),
+        boxShadow: [
+          boxshadow(timeColor),
+        ],
         shape: BoxShape.circle,
-        border: Border.all(color: timeColor, width: 5),
       ),
       child: Stack(
         children: [
@@ -100,29 +110,19 @@ class _TimerAppState extends State<TimerApp> {
             hourHandColor: Colors.transparent,
             minuteHandColor: Colors.transparent,
           ),
-          ...List.generate(
-            60,
-            (index) => Center(
-              child: Transform.rotate(
-                angle: index * 6 * pi / 180,
-                child: VerticalDivider(
-                  color: (index % 5 == 0) ? timeColor : Colors.white,
-                  thickness: (index % 5 == 0) ? 4 : 1,
-                  indent: (index % 5 == 0) ? height / 1.11 : height / 1.11,
-                ),
-              ),
-            ),
-          ),
 
           //circular progress bar
           Center(
-            child: SizedBox(
-              height: 300,
-              width: 300,
-              child: CircularProgressIndicator(
-                value: second / (60 * minutes),
-                color: timeColor,
-                strokeWidth: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: SizedBox(
+                height: 300,
+                width: 300,
+                child: CircularProgressIndicator(
+                  value: second / (60 * minutes),
+                  color: timeColor,
+                  strokeWidth: 6,
+                ),
               ),
             ),
           ),
@@ -135,7 +135,7 @@ class _TimerAppState extends State<TimerApp> {
                     style: GoogleFonts.varelaRound(
                       textStyle: TextStyle(
                           color: Colors.red.shade100,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold),
                     )),
 
@@ -144,6 +144,7 @@ class _TimerAppState extends State<TimerApp> {
                   onPressed: () {
                     if (isRunning) {
                       isRunning = false;
+                      startStop();
                     } else {
                       isRunning = true;
                       startStop();
@@ -161,7 +162,7 @@ class _TimerAppState extends State<TimerApp> {
                       style: GoogleFonts.varelaRound(
                         textStyle: const TextStyle(
                             color: Colors.black,
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 2),
                       ),
@@ -211,7 +212,7 @@ class _TimerAppState extends State<TimerApp> {
     return CupertinoButton(
         child: Container(
           width: 100,
-          height: 24,
+          height: 26,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: timeColor,
@@ -239,4 +240,13 @@ class _TimerAppState extends State<TimerApp> {
 //     dateTime = DateTime.now();
 //   });
 // }
+
+  boxshadow(Color color) {
+    return BoxShadow(
+      offset: const Offset(8, 8),
+      blurRadius: 20,
+      spreadRadius: 0.001,
+      color: color.withOpacity(0.2),
+    );
+  }
 }

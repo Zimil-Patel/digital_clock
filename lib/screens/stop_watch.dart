@@ -64,10 +64,12 @@ class _StopWatchState extends State<StopWatch> {
           backgroundColor: Colors.transparent,
           title: Text(
             'Stop Watch',
-            style: TextStyle(
-              color: timeColor,
-              fontSize: 26,
-              fontWeight: FontWeight.w600,
+            style: GoogleFonts.varelaRound(
+              textStyle: TextStyle(
+                color: timeColor,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),
@@ -84,17 +86,19 @@ class _StopWatchState extends State<StopWatch> {
                 },
                 padding: const EdgeInsets.all(0),
                 child: Container(
-                  height: height / 1.3,
-                  width: height / 1.3,
+                  margin: const EdgeInsets.all(30),
+                  height: 300,
+                  width: 300,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.black,
                     border: Border.all(
                       width: 0,
                     ),
-                    boxShadow: const [
-                      BoxShadow(
-                          blurRadius: 15, spreadRadius: 2, color: Colors.white)
+                    boxShadow: [
+                      stopWatch.isRunning
+                          ? boxshadow(Colors.red)
+                          : boxshadow(timeColor),
                     ],
                     shape: BoxShape.circle,
                   ),
@@ -106,8 +110,8 @@ class _StopWatchState extends State<StopWatch> {
                         getFormattedTime(),
                         style: TextStyle(
                           color: timeColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
 
@@ -120,7 +124,7 @@ class _StopWatchState extends State<StopWatch> {
                           style: GoogleFonts.varelaRound(
                             textStyle: TextStyle(
                               color: Colors.red.shade100,
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           )),
                     ],
@@ -136,7 +140,7 @@ class _StopWatchState extends State<StopWatch> {
                     style: GoogleFonts.varelaRound(
                       textStyle: TextStyle(
                         color: Colors.red.shade100,
-                        fontSize: 28,
+                        fontSize: 26,
                       ),
                     )),
               )
@@ -144,6 +148,15 @@ class _StopWatchState extends State<StopWatch> {
           ),
         ),
       ),
+    );
+  }
+
+  boxshadow(Color color) {
+    return BoxShadow(
+      offset: const Offset(8, 8),
+      blurRadius: 20,
+      spreadRadius: 0.001,
+      color: color.withOpacity(0.2),
     );
   }
 }

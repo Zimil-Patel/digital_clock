@@ -1,3 +1,5 @@
+//ignore this dar file
+
 import 'dart:async';
 
 import 'package:digital_clock/colors/digital_clock.dart';
@@ -52,7 +54,6 @@ class _StopWatchState extends State<StopWatch> {
         //appbar of the screen
         appBar: AppBar(
           centerTitle: true,
-
           iconTheme: IconThemeData(color: timeColor),
           backgroundColor: Colors.transparent,
           title: Text(
