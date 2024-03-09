@@ -33,7 +33,8 @@ class _DigitalClockState extends State<DigitalClock> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-          child: Row(children: [
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         // hours and minutes
         hoursAndMinute(),
 
@@ -44,90 +45,84 @@ class _DigitalClockState extends State<DigitalClock> {
   }
 
   hoursAndMinute() {
-    return Expanded(
-      flex: 5,
-      child: Container(
-        alignment: Alignment.center,
-        height: height,
-        child: Text(
-          '${dateTime.hour % 12 < 10 ? '0${dateTime.hour % 12}' : dateTime.hour % 12} : ${dateTime.minute < 10 ? '0${dateTime.minute}' : dateTime.minute}',
-          style: GoogleFonts.varelaRound(
-              textStyle: TextStyle(
-                  fontSize: width / 4,
-                  color: timeColor,
-                  letterSpacing: -20,
-                  fontWeight: FontWeight.bold)),
-        ),
+    return Container(
+      alignment: Alignment.center,
+      height: height,
+      child: Text(
+        '${dateTime.hour % 12 < 10 ? '0${dateTime.hour % 12}' : dateTime.hour % 12} : ${dateTime.minute < 10 ? '0${dateTime.minute}' : dateTime.minute}',
+        style: GoogleFonts.varelaRound(
+            textStyle: TextStyle(
+                fontSize: width / 4,
+                color: timeColor,
+                letterSpacing: -20,
+                fontWeight: FontWeight.bold)),
       ),
     );
   }
 
   rightStuffs() {
-    return Expanded(
-      flex: 2,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //top stuff
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                    text: TextSpan(children: [
-                  showDayDate(
-                      day: DateFormat('EE').format(dateTime), color: timeColor),
-                  showDayDate(day: ' ${dateTime.day}'),
-                ])),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        //top stuff
+        Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                  text: TextSpan(children: [
+                showDayDate(
+                    day: DateFormat('EE').format(dateTime), color: timeColor),
+                showDayDate(day: ' ${dateTime.day}'),
+              ])),
 
-                //temperature
-                const Text(
-                  '26°',
-                  style: TextStyle(
-                      fontSize: 40,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
+              //temperature
+              const Text(
+                '26°',
+                style: TextStyle(
+                    fontSize: 40,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
           ),
+        ),
 
-          //bottom stuff
-          Container(
-            margin: const EdgeInsets.only(bottom: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //alaram icon
-                Icon(
-                  Icons.alarm_on_rounded,
-                  size: 40,
-                  color: timeColor,
-                ),
+        //bottom stuff
+        Container(
+          margin: const EdgeInsets.only(bottom: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //alaram icon
+              Icon(
+                Icons.alarm_on_rounded,
+                size: 40,
+                color: timeColor,
+              ),
 
-                const SizedBox(
-                  height: 20,
-                ),
+              const SizedBox(
+                height: 20,
+              ),
 
-                //second and AM/PM
-                RichText(
-                    text: TextSpan(children: [
-                  showDayDate(
-                      day:
-                          '${dateTime.second < 10 ? '0${dateTime.second}' : dateTime.second} '),
-                  showDayDate(day: 'sec  ', size: 16),
-                  showDayDate(
-                      day: dateTime.hour < 12 ? 'AM' : 'PM',
-                      color: timeColor,
-                      size: 16),
-                ])),
-              ],
-            ),
+              //second and AM/PM
+              RichText(
+                  text: TextSpan(children: [
+                showDayDate(
+                    day:
+                        '${dateTime.second < 10 ? '0${dateTime.second}' : dateTime.second} '),
+                showDayDate(day: 'sec  ', size: 16),
+                showDayDate(
+                    day: dateTime.hour < 12 ? 'AM' : 'PM',
+                    color: timeColor,
+                    size: 16),
+              ])),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
