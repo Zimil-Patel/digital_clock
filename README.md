@@ -4,7 +4,7 @@ A new Flutter project.
 
 ##Digital clock
 
-<img src = "https://github.com/Zimil-Patel/digital_clock/blob/main/snaps/snp6">
+<img src = "https://github.com/Zimil-Patel/digital_clock/blob/main/snaps/snp6.png">
 
 <img src = "https://github.com/Zimil-Patel/digital_clock/blob/main/snaps/snp1.png">
 
